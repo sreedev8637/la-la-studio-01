@@ -141,6 +141,17 @@
         padding: 160px max(7vw, 28px) 80px;
         max-width: 850px;
       }
+      .hero-phone {
+        margin: 36px 0 0;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .hero-phone a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
       .eyebrow {
         text-transform: uppercase;
         letter-spacing: 0.22em;
@@ -971,6 +982,7 @@
           </p>
           <a
             class="button"
+            id="explore-services-btn"
             href="lala-studio-services-prices.pdf"
             target="_blank"
             rel="noopener"
@@ -983,6 +995,14 @@
               />
             </svg>
           </a>
+          <p class="hero-phone">
+            Call for appointments:
+            <a
+              href="tel:+919074866363"
+              aria-label="Call The Lala Studio for an appointment at +91 90748 66363"
+              >+91 90748 66363</a
+            >
+          </p>
         </div>
         <span class="vertical">Your space to unwind</span>
       </section>
@@ -1263,6 +1283,7 @@
         <p>Discover the care, colour and styling that feel right for you.</p>
         <a
           class="button"
+          id="view-services-prices-btn"
           href="lala-studio-services-prices.pdf"
           target="_blank"
           rel="noopener"
@@ -1294,6 +1315,14 @@
             1st Floor, Rambal Building, opposite Varma Hospital, Vadakkekotta,
             Thrippunithura, Ernakulam, Kochi, Kerala 682301
           </address>
+          <p>
+            Call:
+            <a
+              href="tel:+919074866363"
+              aria-label="Call The Lala Studio at +91 90748 66363"
+              >+91 90748 66363</a
+            >
+          </p>
           <a
             href="https://www.google.com/maps/search/?api=1&amp;query=The%20La%20La%20Studio%2C%201st%20Floor%2C%20Rambal%20Building%2C%20opposite%20Varma%20Hospital%2C%20Vadakkekotta%2C%20Thrippunithura%2C%20Ernakulam%2C%20Kochi%2C%20Kerala%20682301"
             target="_blank"
@@ -1470,6 +1499,34 @@
         script.onload = () => window.instgrm?.Embeds?.process();
         document.body.appendChild(script);
       })();
+    </script>
+    <script>
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (!a) return;
+        let name, params = { link_url: a.href };
+        if (a.id === "explore-services-btn") {
+          name = "explore_services_click";
+        } else if (a.id === "view-services-prices-btn") {
+          name = "view_services_prices_click";
+        } else if (a.closest("nav#nav")) {
+          name = "nav_click";
+          params.link_text = a.textContent.trim();
+        } else if (a.closest(".hero-phone")) {
+          name = "hero_call_click";
+        } else if (a.classList.contains("whatsapp-float")) {
+          name = "whatsapp_float_click";
+        } else if (a.classList.contains("service-cta")) {
+          name = "service_appointment_click";
+          const h3 = a.closest(".service").querySelector("h3");
+          params.service_name = h3 ? h3.textContent.trim() : "";
+        } else if (a.closest("footer")) {
+          name = "footer_click";
+          params.link_text =
+            a.getAttribute("aria-label") || a.textContent.trim();
+        } else return;
+        gtag("event", name, params);
+      });
     </script>
   </body>
 </html>
